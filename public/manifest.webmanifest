@@ -1,0 +1,21 @@
+{
+  "name": "Mushak Yatra — The Road to Bappa",
+  "short_name": "Mushak Yatra",
+  "description": "A 3D Ganesh Chaturthi festival runner. Play Mushak, Ganesha's mouse, and bring offerings to Bappa before the aarti.",
+  "id": "mushak-yatra",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "any",
+  "background_color": "#1a0b2e",
+  "theme_color": "#1a0b2e",
+  "categories": ["games", "entertainment"],
+  "lang": "en",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

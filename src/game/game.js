@@ -436,6 +436,9 @@ export class Game {
     const blessing = completed ? BLESSINGS[Math.floor(Math.random() * BLESSINGS.length)]
       : 'Vighnaharta is patient. Take a breath and try again!';
 
+    // Let the page offer to send this run to the online leaderboard
+    this.onResults?.({ mode: this.mode, score, stars, distance: Math.floor(this.distance), completed });
+
     setTimeout(() => {
       this.ui.results({
         kicker, title, score, newBest, stars, showStars: completed, rows, blessing,

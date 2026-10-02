@@ -7,6 +7,18 @@
   <meta name="description" content="Mushak Yatra - race through the Ganesh Chaturthi festival as Mushak and bring offerings to Bappa!" />
   <title>Mushak Yatra · The Road to Bappa</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐭</text></svg>" />
+  <!-- Installable app (PWA): icon on the home screen, fullscreen, works offline -->
+  <link rel="manifest" href="./manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="./icons/apple-touch-icon-180.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Mushak Yatra" />
+  <meta property="og:title" content="Mushak Yatra — The Road to Bappa" />
+  <meta property="og:description" content="A 3D Ganesh Chaturthi festival runner. Play as Mushak and bring offerings to Bappa!" />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="./icons/icon-512.png" />
+  <meta name="twitter:card" content="summary_large_image" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
@@ -37,6 +49,7 @@
         <div class="menu">
           <button class="btn primary big" data-action="play">▶ Start Yatra</button>
           <button class="btn" data-action="endless" id="btn-endless">∞ Endless Mode <small id="endless-lock">🔒 finish the Yatra</small></button>
+          <button class="btn" data-action="leaderboard">🏆 Leaderboard</button>
           <button class="btn" data-action="howto">📜 How to Play</button>
         </div>
         <div class="best-row">
@@ -47,6 +60,7 @@
         <div class="settings-row">
           <button class="chip" id="btn-sound">🔊 Sound On</button>
           <button class="chip" id="btn-quality">✨ Quality: Auto</button>
+          <button class="chip" id="btn-install">📲 Install App</button>
         </div>
       </div>
     </section>
@@ -67,6 +81,41 @@
           <div class="hcard"><div class="hicon">🪔</div><b>3 Diyas</b><span>Bumping obstacles blows out a diya. Keep one lit!</span></div>
         </div>
         <button class="btn primary" data-action="back">Got it!</button>
+      </div>
+    </section>
+
+    <!-- INSTALL (steps depend on the player's device) -->
+    <section id="install" class="screen">
+      <div class="panel small-pad">
+        <p class="kicker">Play like an app</p>
+        <h2 id="install-title">📲 Install Mushak Yatra</h2>
+        <p class="lead" id="install-lead">Add the game to your home screen: it opens fullscreen, loads instantly and even works without internet.</p>
+        <button class="btn primary" id="install-now" hidden>📲 Install now</button>
+        <ol class="install-steps" id="install-steps"></ol>
+        <p class="install-note" id="install-note"></p>
+        <button class="btn" data-action="install-later">Maybe later — just play</button>
+      </div>
+    </section>
+
+    <!-- LEADERBOARD -->
+    <section id="leaderboard" class="screen">
+      <div class="panel">
+        <h2>🏆 Leaderboard</h2>
+        <div class="lb-tabs">
+          <button class="chip lb-tab active" data-lb-mode="yatra">Yatra</button>
+          <button class="chip lb-tab" data-lb-mode="endless">∞ Endless</button>
+        </div>
+        <div id="lb-list" class="lb-list"></div>
+        <p id="lb-note" class="lb-note"></p>
+        <div class="lb-code" id="lb-code" hidden>
+          <small>Your recovery code — save it to keep your score on another phone:</small>
+          <code id="lb-code-value"></code>
+          <div class="lb-restore">
+            <input id="lb-restore-input" type="text" placeholder="Paste a code to restore" maxlength="24" />
+            <button class="chip" id="lb-restore-btn">Restore</button>
+          </div>
+        </div>
+        <button class="btn primary" data-action="back">Back</button>
       </div>
     </section>
 
@@ -142,6 +191,11 @@
         <div class="res-new" id="res-new">NEW BEST!</div>
         <div class="breakdown" id="res-breakdown"></div>
         <p class="blessing" id="res-blessing"></p>
+        <div class="submit-row" id="submit-row" hidden>
+          <input id="nickname" type="text" placeholder="Your nickname" maxlength="16" autocomplete="off" />
+          <button class="btn primary" id="btn-submit">🏆 Submit score</button>
+          <p class="submit-msg" id="submit-msg"></p>
+        </div>
         <div class="menu row">
           <button class="btn primary" data-action="restart">↻ Play Again</button>
           <button class="btn" data-action="menu">⌂ Menu</button>

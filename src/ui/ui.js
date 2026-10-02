@@ -5,7 +5,7 @@ const $ = (id) => document.getElementById(id);
 
 export class UI {
   constructor() {
-    this.screens = ['loading', 'title', 'howto', 'story', 'pause', 'results'];
+    this.screens = ['loading', 'title', 'howto', 'story', 'pause', 'results', 'leaderboard', 'install'];
     this.el = {
       score: $('hud-score'), combo: $('hud-combo'), act: $('hud-act'), progress: $('hud-progress'),
       lives: $('hud-lives'), modak: $('hud-modak'), modakBar: $('hud-modak-bar'), puja: $('hud-puja'),
