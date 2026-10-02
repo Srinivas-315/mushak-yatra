@@ -1,14 +1,15 @@
 // Online leaderboard settings.
 //
-// Leave these empty and the game works exactly as before, with scores saved
-// only on each player's own device. Fill them in to switch the shared
-// leaderboard on. Step-by-step instructions: see LEADERBOARD_SETUP.md
+// Leave these empty and the game still works, with scores saved only on each
+// player's own device. Filled in, the shared leaderboard switches on.
+// Setup steps: see LEADERBOARD_SETUP.md
 //
-// The "anon" key below is Supabase's PUBLIC key. It is meant to be shipped
-// inside web pages and is safe to commit. Never put the "service_role" key
-// here: that one is secret.
+// The key below is Supabase's PUBLISHABLE key. Supabase states these are safe
+// to share publicly: it ships inside this web page anyway, and the database
+// rules only allow reading the leaderboard and submitting a score.
+// Never put a "secret" / "service_role" key here.
 
 export const LEADERBOARD = {
-  url: '',      // e.g. 'https://abcdefghijkl.supabase.co'
-  anonKey: '',  // the public anon key from Supabase → Project Settings → API
+  url: 'https://xwlvkuctetendwxhiegu.supabase.co',
+  anonKey: 'sb_publishable_1xIAiD0NVjkzxzyLF-cpqg_8X9_0Dbe',
 };
