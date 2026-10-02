@@ -1,0 +1,18 @@
+{
+  "name": "mushak-yatra",
+  "version": "1.0.0",
+  "description": "Mushak Yatra - The Road to Bappa. A 3D Ganesh Chaturthi festival runner.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "vite": "^5.4.10"
+  }
+}

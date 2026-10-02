@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#1a0b2e" />
+  <meta name="description" content="Mushak Yatra - race through the Ganesh Chaturthi festival as Mushak and bring offerings to Bappa!" />
+  <title>Mushak Yatra · The Road to Bappa</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐭</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;700;800&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <div id="app">
+    <div id="stage"></div>
+    <div id="hit-flash"></div>
+    <div id="vighna-glow"></div>
+
+    <!-- LOADING -->
+    <section id="loading" class="screen active">
+      <div class="load-inner">
+        <div class="om">🪔</div>
+        <h2>Ganpati Bappa Morya</h2>
+        <div class="bar"><span id="load-bar"></span></div>
+        <p id="load-text">Lighting the diyas…</p>
+      </div>
+    </section>
+
+    <!-- TITLE -->
+    <section id="title" class="screen">
+      <div class="title-card">
+        <p class="kicker">Ganesh Chaturthi Special</p>
+        <h1 class="logo"><span>MUSHAK</span><span class="logo-2">YATRA</span></h1>
+        <p class="tagline">The Road to Bappa</p>
+        <div class="menu">
+          <button class="btn primary big" data-action="play">▶ Start Yatra</button>
+          <button class="btn" data-action="endless" id="btn-endless">∞ Endless Mode <small id="endless-lock">🔒 finish the Yatra</small></button>
+          <button class="btn" data-action="howto">📜 How to Play</button>
+        </div>
+        <div class="best-row">
+          <div>🏆 Best <b id="best-score">0</b></div>
+          <div>⭐ Stars <b id="best-stars">0</b>/3</div>
+          <div>∞ Endless <b id="best-endless">0</b></div>
+        </div>
+        <div class="settings-row">
+          <button class="chip" id="btn-sound">🔊 Sound On</button>
+          <button class="chip" id="btn-quality">✨ Quality: Auto</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- HOW TO -->
+    <section id="howto" class="screen">
+      <div class="panel">
+        <h2>How to Play</h2>
+        <p class="lead">You are <b>Mushak</b>, Lord Ganesha's loyal mouse. Race through the festival and bring offerings to Bappa before the aarti!</p>
+        <div class="howto-grid">
+          <div class="hcard"><div class="hicon">⬅️➡️</div><b>Change lane</b><span>Swipe left/right · ← → or A D</span></div>
+          <div class="hcard"><div class="hicon">⬆️</div><b>Jump</b><span>Swipe up · ↑ W or Space</span></div>
+          <div class="hcard"><div class="hicon">⬇️</div><b>Slide</b><span>Swipe down · ↓ or S</span></div>
+          <div class="hcard"><div class="hicon">🟠</div><b>Modaks</b><span>Collect 21 for <b>Vighnaharta Mode</b> — obstacles turn into flowers!</span></div>
+          <div class="hcard"><div class="hicon">🥁</div><b>Dhol Beat</b><span>Move on the glowing beat ring to build a combo</span></div>
+          <div class="hcard"><div class="hicon">🌱</div><b>Eco Gates</b><span>Pick the green clay gate, avoid plastic for a Green Blessing</span></div>
+          <div class="hcard"><div class="hicon">🌼</div><b>Offerings</b><span>Durva, flowers & diyas fill the Puja meter</span></div>
+          <div class="hcard"><div class="hicon">🪔</div><b>3 Diyas</b><span>Bumping obstacles blows out a diya. Keep one lit!</span></div>
+        </div>
+        <button class="btn primary" data-action="back">Got it!</button>
+      </div>
+    </section>
+
+    <!-- HUD -->
+    <section id="hud" class="hud">
+      <div class="hud-top">
+        <div class="hud-left">
+          <div class="score" id="hud-score">0</div>
+          <div class="combo" id="hud-combo">x1</div>
+        </div>
+        <div class="hud-center">
+          <div class="act-name" id="hud-act">Act 1 · Bazaar at Dawn</div>
+          <div class="progress"><span id="hud-progress"></span></div>
+        </div>
+        <div class="hud-right">
+          <div class="lives" id="hud-lives">🪔🪔🪔</div>
+          <button class="icon-btn" id="btn-pause" aria-label="Pause">❚❚</button>
+        </div>
+      </div>
+      <div class="hud-bottom">
+        <div class="meter modak-meter">
+          <div class="meter-label">🟠 Modaks <b id="hud-modak">0</b>/21</div>
+          <div class="meter-bar"><span id="hud-modak-bar"></span></div>
+        </div>
+        <div class="beat" id="hud-beat"><div class="beat-core">🥁</div></div>
+        <div class="meter puja-meter">
+          <div class="meter-label">🌼 Puja <b id="hud-puja">0</b></div>
+          <div class="meter-bar"><span id="hud-puja-bar"></span></div>
+        </div>
+      </div>
+      <div class="vighna" id="hud-vighna">
+        <div>✨ VIGHNAHARTA MODE ✨</div>
+        <div class="vighna-bar"><span id="vighna-bar"></span></div>
+      </div>
+      <div class="hint" id="hint"><div class="hint-icon" id="hint-icon"></div><div class="hint-text" id="hint-text"></div></div>
+      <div id="floaters"></div>
+    </section>
+
+    <!-- BANNER -->
+    <div id="banner" class="banner"><small id="banner-sub"></small><div id="banner-main"></div></div>
+
+    <!-- STORY / QUIZ -->
+    <section id="story" class="screen">
+      <div class="panel story-panel">
+        <p class="kicker">Bappa Katha</p>
+        <h2 id="story-title"></h2>
+        <p id="story-text" class="story-text"></p>
+        <div class="quiz">
+          <p class="quiz-q" id="quiz-q"></p>
+          <div class="quiz-opts" id="quiz-opts"></div>
+          <div class="quiz-timer"><span id="quiz-timer"></span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAUSE -->
+    <section id="pause" class="screen">
+      <div class="panel small">
+        <h2>Paused</h2>
+        <button class="btn primary" data-action="resume">▶ Resume</button>
+        <button class="btn" data-action="restart">↻ Restart</button>
+        <button class="btn" data-action="menu">⌂ Main Menu</button>
+      </div>
+    </section>
+
+    <!-- RESULTS -->
+    <section id="results" class="screen">
+      <div class="panel results-panel">
+        <p class="kicker" id="res-kicker">Yatra Complete</p>
+        <h2 id="res-title">Ganpati Bappa Morya!</h2>
+        <div class="stars" id="res-stars"><span>★</span><span>★</span><span>★</span></div>
+        <div class="res-score" id="res-score">0</div>
+        <div class="res-new" id="res-new">NEW BEST!</div>
+        <div class="breakdown" id="res-breakdown"></div>
+        <p class="blessing" id="res-blessing"></p>
+        <div class="menu row">
+          <button class="btn primary" data-action="restart">↻ Play Again</button>
+          <button class="btn" data-action="menu">⌂ Menu</button>
+        </div>
+      </div>
+    </section>
+
+    <div id="rotate-hint">Tip: Portrait or landscape both work 🙂</div>
+  </div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
