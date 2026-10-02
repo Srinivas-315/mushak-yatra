@@ -11,7 +11,7 @@ offerings, and reach the shore in time for the aarti.
 
 ## ▶️ Play
 
-- **Live link:** _(add your hosted URL here — see "Publishing" below)_
+- **▶️ Play now: https://srinivas-315.github.io/mushak-yatra/**
 - **Run locally:** see "Running it yourself"
 
 Works in Chrome, Edge, Firefox and Safari, on Android, iPhone, laptop and desktop.
