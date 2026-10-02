@@ -414,10 +414,12 @@ export class World {
     }
     g.add(inst);
     if (kandils) {
-      // Akash kandil star lanterns hanging from the string
-      for (const k of [0.25, 0.5, 0.75]) {
+      // Akash kandil star lanterns, hung only at the sides and high up: in
+      // portrait the camera sits ~4 m up, so a centred lantern flew through
+      // the screen and blocked the player's view of the road.
+      for (const k of [0.12, 0.88]) {
         const x = -6 + k * 12;
-        const ly = y - sagAt(k) - 0.7;
+        const ly = y - sagAt(k) * 0.4 + 0.5;
         const lantern = this.mesh(g, this.G.kandil, this.bulbMats[Math.floor(Math.random() * this.bulbMats.length)], x, ly, z, 1, 1.3, 1);
         lantern.rotation.y = Math.random();
         const sp = new THREE.Sprite(this.M.glow);
