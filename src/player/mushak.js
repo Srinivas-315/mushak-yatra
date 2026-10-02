@@ -102,12 +102,18 @@ export class Mushak {
       this.legs.push(pivot);
     }
 
-    // Tail: a curved tube, re-bent every frame for a wave
-    this.tailPts = Array.from({ length: 8 }, (_, i) => new THREE.Vector3(0, 0.4 + i * 0.03, 0.5 + i * 0.12));
-    this.tailCurve = new THREE.CatmullRomCurve3(this.tailPts);
-    this.tail = new THREE.Mesh(new THREE.TubeGeometry(this.tailCurve, 20, 0.03, 6), pink);
-    this.tail.castShadow = true;
-    this.body.add(this.tail);
+    // Tail: a chain of small beads. Animating their positions costs nothing,
+    // whereas rebuilding a tube geometry every frame created garbage and stutter.
+    this.tailSegs = [];
+    const beadGeo = new THREE.SphereGeometry(1, 8, 6);
+    for (let i = 0; i < 9; i++) {
+      const bead = new THREE.Mesh(beadGeo, pink);
+      const r = 0.055 * (1 - i / 11);
+      bead.scale.set(r, r, r);
+      bead.castShadow = i < 5;
+      this.body.add(bead);
+      this.tailSegs.push(bead);
+    }
 
     // Golden aura for Vighnaharta Mode
     this.aura = new THREE.Sprite(new THREE.SpriteMaterial({
@@ -172,14 +178,15 @@ export class Mushak {
     if (this.blinkT < 0) this.blinkT = 2 + Math.random() * 3;
     this.eyes.forEach((e) => { e.scale.y = 1.15 * (s.tumble > 0 ? 0.2 : blink); });
 
-    // Tail wave (rebuild the tube geometry)
-    for (let i = 0; i < this.tailPts.length; i++) {
-      const k = i / this.tailPts.length;
-      this.tailPts[i].x = Math.sin(this.t * 7 - i * 0.7) * 0.12 * k;
-      this.tailPts[i].y = 0.4 + i * 0.045 + Math.sin(this.t * 5 - i) * 0.05 * k;
+    // Tail wave: just move the beads, no geometry work
+    for (let i = 0; i < this.tailSegs.length; i++) {
+      const k = i / this.tailSegs.length;
+      this.tailSegs[i].position.set(
+        Math.sin(this.t * 7 - i * 0.7) * 0.14 * k,
+        0.42 + i * 0.045 + Math.sin(this.t * 5 - i) * 0.06 * k,
+        0.5 + i * 0.105,
+      );
     }
-    this.tail.geometry.dispose();
-    this.tail.geometry = new THREE.TubeGeometry(this.tailCurve, 16, 0.03 * 1, 6);
 
     // Aura & shadow
     // Aura blinks quickly in the last moment so the player knows it's ending

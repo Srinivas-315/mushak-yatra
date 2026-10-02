@@ -234,22 +234,37 @@ export class World {
       const g = new THREE.Group();
       g.position.z = -i * SEG_LEN + SEG_LEN;
       this.scene.add(g);
-      const seg = { group: g, index: i, dancers: [] };
+      const seg = { group: g, index: i, dancers: [], cache: {}, dancersByAct: {}, shown: null };
       this.segments.push(seg);
       this.fillSegment(seg, 0);
     }
     this.segCounter = SEG_COUNT;
+    // Build the other two acts now, while the loading screen is up, so that
+    // changing act later is just a swap and never stutters.
+    for (const seg of this.segments) {
+      this.fillSegment(seg, 1);
+      this.fillSegment(seg, 2);
+      this.fillSegment(seg, 0);
+    }
   }
 
+  // Each segment builds its scenery for an act ONCE and then keeps it.
+  // Recycling only swaps which act's group is attached, so no objects are
+  // created while playing (rebuilding caused a visible hitch every second).
   fillSegment(seg, act) {
-    const g = seg.group;
-    while (g.children.length) {
-      const c = g.children[0];
-      // Instanced meshes own per-instance GPU buffers: free them or they leak
-      if (c.isInstancedMesh) c.dispose();
-      g.remove(c);
+    if (seg.shown && seg.shown !== seg.cache[act]) {
+      seg.group.remove(seg.shown);
+      seg.shown = null;
     }
-    seg.dancers = [];
+    if (seg.cache[act]) {
+      if (seg.shown !== seg.cache[act]) seg.group.add(seg.cache[act]);
+      seg.shown = seg.cache[act];
+      seg.dancers = seg.dancersByAct[act];
+      return;
+    }
+
+    const g = new THREE.Group();
+    const dancers = [];
     const n = this.segCounter = (this.segCounter || 0) + 1;
     const r = Math.random;
 
@@ -257,14 +272,14 @@ export class World {
       for (const side of [-1, 1]) {
         this.building(g, side, this.dayFacades, 0);
         if (r() < 0.7) this.stall(g, side, (r() - 0.5) * 8);
-        if (r() < 0.5) this.people(seg, side, 1 + Math.floor(r() * 2));
+        if (r() < 0.5) this.people(g, dancers, side, 1 + Math.floor(r() * 2));
       }
       if (n % 2 === 0) this.bunting(g, 5.5 + r());
       if (n % 3 === 0) this.lampPost(g, r() < 0.5 ? -1 : 1, 0);
     } else if (act === 1) {
       for (const side of [-1, 1]) {
         this.building(g, side, this.nightFacades, 1);
-        if (r() < 0.6) this.people(seg, side, 2 + Math.floor(r() * 2), false, true);
+        if (r() < 0.6) this.people(g, dancers, side, 2 + Math.floor(r() * 2), false, true);
         if (r() < 0.4) this.stall(g, side, (r() - 0.5) * 8);
       }
       this.stringLights(g, -SEG_LEN * 0.25, 6.2, true);
@@ -273,12 +288,18 @@ export class World {
     } else {
       // Left: palms and a crowd carrying lanterns. Right: sea promenade.
       if (r() < 0.8) this.palm(g, -1, (r() - 0.5) * 10);
-      this.people(seg, -1, 3 + Math.floor(r() * 3), true);
+      this.people(g, dancers, -1, 3 + Math.floor(r() * 3), true);
       this.railing(g, 1);
       if (n % 2 === 0) this.lampPost(g, 1, 2);
       if (n % 3 === 0) this.stringLights(g, 0, 6.8);
       if (n % 6 === 0) this.pandalArch(g);
     }
+
+    seg.cache[act] = g;
+    seg.dancersByAct[act] = dancers;
+    seg.dancers = dancers;
+    seg.shown = g;
+    seg.group.add(g);
   }
 
   mesh(parent, geo, mat, x, y, z, sx = 1, sy = 1, sz = 1) {
@@ -326,7 +347,7 @@ export class World {
     }
   }
 
-  people(seg, side, count, lanterns = false, drums = false) {
+  people(parent, dancers, side, count, lanterns = false, drums = false) {
     for (let i = 0; i < count; i++) {
       const p = new THREE.Group();
       const x = side * (LANE * 1.5 + 1.2 + Math.random() * 1.6);
@@ -355,8 +376,8 @@ export class World {
       p.rotation.y = side > 0 ? -Math.PI / 2 : Math.PI / 2;
       p.userData.phase = Math.random() * 6.28;
       p.userData.arms = [arm, arm2];
-      seg.group.add(p);
-      seg.dancers.push(p);
+      parent.add(p);
+      dancers.push(p);
     }
   }
 

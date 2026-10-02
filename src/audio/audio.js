@@ -32,7 +32,7 @@ export class Audio {
       if (!AC) return;
       this.ctx = new AC();
       this.master = this.ctx.createGain();
-      this.master.gain.value = 0.85 * this.volume;
+      this.master.gain.value = 0.6 * this.volume;
       const comp = this.ctx.createDynamicsCompressor();
       comp.threshold.value = -14; comp.ratio.value = 4;
       this.master.connect(comp).connect(this.ctx.destination);
@@ -60,7 +60,7 @@ export class Audio {
     this.volume = v;
     this.muted = v === 0;
     try { localStorage.setItem('my-volume', String(v)); } catch { /* private mode */ }
-    if (this.master) this.master.gain.setTargetAtTime(0.85 * v, this.ctx.currentTime, 0.05);
+    if (this.master) this.master.gain.setTargetAtTime(0.6 * v, this.ctx.currentTime, 0.05);
   }
 
   setMuted(m) { this.setVolume(m ? 0 : 1); }
