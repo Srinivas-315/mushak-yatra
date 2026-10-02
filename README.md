@@ -12,6 +12,10 @@ offerings, and reach the shore in time for the aarti.
 ## ▶️ Play
 
 - **▶️ Play now: https://srinivas-315.github.io/mushak-yatra/**
+- **📲 Install it:** the game is a PWA — Android shows an "Install app" prompt, iPhone uses
+  Share → Add to Home Screen. Once installed it opens fullscreen and plays **offline**.
+- **🏆 Shared leaderboard:** finish a run, type a nickname, submit. No email, no phone,
+  no password — see [LEADERBOARD_SETUP.md](LEADERBOARD_SETUP.md) for how it is built.
 - **Run locally:** see "Running it yourself"
 
 Works in Chrome, Edge, Firefox and Safari, on Android, iPhone, laptop and desktop.
